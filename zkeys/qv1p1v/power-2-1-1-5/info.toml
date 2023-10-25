@@ -1,5 +1,5 @@
 algorithm = "groth16"
-voting_logic = "quadratic cost & 1v1c"
+voting_logic = "quadratic cost & 1p1v"
 
 state_tree_depth = "2"
 int_state_tree_depth = "1"

@@ -5,6 +5,8 @@ include "../node_modules/circomlib/circuits/bitify.circom";
 /*
  * Converts a field element (253 bits) to n 32-bit output elements where n <= 7
  * and n > 1
+ *
+ * output: 0x...[out_0][out_1]...[out_n]
  */
 template UnpackElement(n) {
     signal input in;
