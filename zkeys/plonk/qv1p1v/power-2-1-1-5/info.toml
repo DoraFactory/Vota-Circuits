@@ -1,0 +1,16 @@
+algorithm = "plonk"
+voting_logic = "quadratic cost & 1p1v"
+
+state_tree_depth = "2"
+int_state_tree_depth = "1"
+vote_options_tree_depth = "1"
+batch_size = "5"
+
+ptau = "powersOfTau28_hez_final_22.ptau"
+
+[zkeys_tar_sha256]
+hash = "2179a852adf2fe9029f0114ab47bf850df95a51b59410e0f6581fc7b6c5e893c"
+
+[[contribution]]
+name = "Dorahacks"
+source = "official"
