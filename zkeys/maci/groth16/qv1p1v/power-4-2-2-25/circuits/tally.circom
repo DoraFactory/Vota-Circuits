@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "../../circuits/power/tallyVotes.circom";
+include "../../../circuits/maci/power/tallyVotes.circom";
 
 // state_tree_depth,
 // int_state_tree_depth,
@@ -10,4 +10,4 @@ component main {
   public [
     inputHash
   ]
-} = TallyVotes(2, 1, 1);
+} = TallyVotes(4, 2, 2);
