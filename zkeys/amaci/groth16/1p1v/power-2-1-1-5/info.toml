@@ -1,0 +1,16 @@
+algorithm = "groth16"
+voting_logic = "amaci 1p1v"
+
+state_tree_depth = "2"
+int_state_tree_depth = "1"
+vote_options_tree_depth = "1"
+batch_size = "5"
+
+ptau = "powersOfTau28_hez_final_22.ptau"
+
+[zkeys_tar_sha256]
+hash = "1ab9a914aee6454321ecbe5316b33a92f844a3a7884c9df213c848c8ba72c17f"
+
+[[contribution]]
+name = "Dorahacks"
+source = "official"
