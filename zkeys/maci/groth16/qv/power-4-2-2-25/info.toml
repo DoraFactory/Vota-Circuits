@@ -1,0 +1,16 @@
+algorithm = "groth16"
+voting_logic = "quadratic cost & 1p1v"
+
+state_tree_depth = "4"
+int_state_tree_depth = "2"
+vote_options_tree_depth = "2"
+batch_size = "25"
+
+ptau = "powersOfTau28_hez_final_22.ptau"
+
+[zkeys_tar_sha256]
+hash = "f28dd602885f38ca9f256b36284456999275c7750d1fad32d2612c40d252654e"
+
+[[contribution]]
+name = "Dorahacks"
+source = "official"
