@@ -275,6 +275,8 @@ template ProcessOne(stateTreeDepth, voteOptionTreeDepth) {
     var PACKED_CMD_LENGTH = 3;
     var TREE_ARITY = 5;
 
+    var MAX_INDEX = TREE_ARITY ** stateTreeDepth;
+
     // var BALLOT_LENGTH = 2;
 
     // var BALLOT_NONCE_IDX = 0;
@@ -340,11 +342,11 @@ template ProcessOne(stateTreeDepth, voteOptionTreeDepth) {
     }
 
     //  ----------------------------------------------------------------------- 
-    // 2. If isValid is 0, generate indices for leaf 0
+    // 2. If isValid is 0, generate indices for leaf MAX_INDEX - 1
     //    Otherwise, generate indices for commmand.stateIndex
     component stateIndexMux = Mux1();
     stateIndexMux.s <== transformer.isValid;
-    stateIndexMux.c[0] <== 0;
+    stateIndexMux.c[0] <== MAX_INDEX - 1;
     stateIndexMux.c[1] <== cmdStateIndex;
 
     component stateLeafPathIndices = QuinGeneratePathIndices(stateTreeDepth);
