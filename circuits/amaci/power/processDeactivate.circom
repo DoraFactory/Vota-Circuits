@@ -17,6 +17,8 @@ template ProcessDeactivateMessages(
     // voteOptionTreeDepth: depth of the vote option tree
     // batchSize: number of messages processed at one time
 
+    var deactivateTreeDepth = stateTreeDepth + 2;
+
     assert(stateTreeDepth > 0);
     assert(batchSize > 0);
 
@@ -82,7 +84,7 @@ template ProcessDeactivateMessages(
 
     signal input activeStateLeavesPathElements[batchSize][stateTreeDepth][TREE_ARITY - 1];
 
-    signal input deactivateLeavesPathElements[batchSize][stateTreeDepth][TREE_ARITY - 1];
+    signal input deactivateLeavesPathElements[batchSize][deactivateTreeDepth][TREE_ARITY - 1];
 
     //
     signal input currentDeactivateCommitment;
@@ -182,7 +184,7 @@ template ProcessDeactivateMessages(
 
     component processors[batchSize];
     for (var i = 0; i < batchSize; i ++) {
-        processors[i] = ProcessOne(stateTreeDepth);
+        processors[i] = ProcessOne(stateTreeDepth, deactivateTreeDepth);
 
         processors[i].isEmptyMsg <== isEmptyMsg[i].out;
 
@@ -208,6 +210,10 @@ template ProcessDeactivateMessages(
                     <== currentStateLeavesPathElements[i][j][k];
                 processors[i].activeStateLeafPathElements[j][k] 
                     <== activeStateLeavesPathElements[i][j][k];
+            }
+        }
+        for (var j = 0; j < deactivateTreeDepth; j ++) {
+            for (var k = 0; k < TREE_ARITY - 1; k ++) {
                 processors[i].deactivateLeafPathElements[j][k] 
                     <== deactivateLeavesPathElements[i][j][k];
             }
@@ -244,12 +250,12 @@ template ProcessDeactivateMessages(
     newDeactivateCommitmentHasher.hash === newDeactivateCommitment;
 }
 
-template ProcessOne(stateTreeDepth) {
+template ProcessOne(stateTreeDepth, deactivateTreeDepth) {
     var MSG_LENGTH = 7;
     var PACKED_CMD_LENGTH = 3;
     var TREE_ARITY = 5;
 
-    var MAX_INDEX = 5 ** stateTreeDepth;
+    var MAX_INDEX = TREE_ARITY ** stateTreeDepth;
 
     var STATE_LEAF_LENGTH = 10;
 
@@ -292,7 +298,7 @@ template ProcessOne(stateTreeDepth) {
     signal input packedCmd[PACKED_CMD_LENGTH];
 
     signal input deactivateIndex;
-    signal input deactivateLeafPathElements[stateTreeDepth][TREE_ARITY - 1];
+    signal input deactivateLeafPathElements[deactivateTreeDepth][TREE_ARITY - 1];
 
     // signal input deactivateLeaf;
 
@@ -423,22 +429,22 @@ template ProcessOne(stateTreeDepth) {
 
     //  ----------------------------------------------------------------------- 
     // .
-    component deactivatePathIndices = QuinGeneratePathIndices(stateTreeDepth);
+    component deactivatePathIndices = QuinGeneratePathIndices(deactivateTreeDepth);
     deactivatePathIndices.in <== deactivateIndex;
 
-    component deactivateLeafQie = QuinLeafExists(stateTreeDepth);
+    component deactivateLeafQie = QuinLeafExists(deactivateTreeDepth);
     deactivateLeafQie.leaf <== 0;
     deactivateLeafQie.root <== currentDeactivateRoot;
-    for (var i = 0; i < stateTreeDepth; i ++) {
+    for (var i = 0; i < deactivateTreeDepth; i ++) {
         deactivateLeafQie.path_index[i] <== deactivatePathIndices.out[i];
         for (var j = 0; j < TREE_ARITY - 1; j++) {
             deactivateLeafQie.path_elements[i][j] <== deactivateLeafPathElements[i][j];
         }
     }
 
-    component newDeactivateLeafQip = QuinTreeInclusionProof(stateTreeDepth);
+    component newDeactivateLeafQip = QuinTreeInclusionProof(deactivateTreeDepth);
     newDeactivateLeafQip.leaf <== deactivateLeafHasher.hash * (1 - isEmptyMsg);
-    for (var i = 0; i < stateTreeDepth; i ++) {
+    for (var i = 0; i < deactivateTreeDepth; i ++) {
         newDeactivateLeafQip.path_index[i] <== deactivatePathIndices.out[i];
         for (var j = 0; j < TREE_ARITY - 1; j++) {
             newDeactivateLeafQip.path_elements[i][j] <== deactivateLeafPathElements[i][j];
