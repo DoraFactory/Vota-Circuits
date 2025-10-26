@@ -49,10 +49,15 @@ template MessageValidator() {
     // validTimestamp.in[0] <== slTimestamp;
     // validTimestamp.in[1] <== pollEndTimestamp;
 
+    // e) Using quadratic deduction or linear deduction
+    signal input isQuadraticCost;
+
     // f) Whether there are sufficient voice credits
     signal input currentVoiceCreditBalance;
     signal input currentVotesForOption;
     signal input voteWeight;
+
+    signal output newBalance;
 
     // Check that voteWeight is < sqrt(field size), so voteWeight ^ 2 will not
     // overflow
@@ -60,10 +65,22 @@ template MessageValidator() {
     validVoteWeight.in[0] <== voteWeight;
     validVoteWeight.in[1] <== 147946756881789319005730692170996259609;
 
-    // Check that currentVoiceCreditBalance + currentVotesForOption >= voteWeight
+    // Check that currentVoiceCreditBalance + currentCostsForOption >= cost
+    component currentCostsForOption = Mux1();
+    currentCostsForOption.s <== isQuadraticCost;
+    currentCostsForOption.c[0] <== currentVotesForOption;
+    currentCostsForOption.c[1] <== currentVotesForOption * currentVotesForOption;
+
+    component cost = Mux1();
+    cost.s <== isQuadraticCost;
+    cost.c[0] <== voteWeight;
+    cost.c[1] <== voteWeight * voteWeight;
+
     component sufficientVoiceCredits = GreaterEqThan(252);
-    sufficientVoiceCredits.in[0] <== currentVotesForOption + currentVoiceCreditBalance;
-    sufficientVoiceCredits.in[1] <== voteWeight;
+    sufficientVoiceCredits.in[0] <== currentCostsForOption.out + currentVoiceCreditBalance;
+    sufficientVoiceCredits.in[1] <== cost.out;
+
+    newBalance <== currentVoiceCreditBalance + currentCostsForOption.out - cost.out;
 
     component validUpdate = IsEqual();
     validUpdate.in[0] <== 6;

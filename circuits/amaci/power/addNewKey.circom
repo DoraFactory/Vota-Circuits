@@ -18,6 +18,8 @@ template AddNewKey(
 
     assert(stateTreeDepth > 0);
 
+    var deactivateTreeDepth = stateTreeDepth + 2;
+
     var TREE_ARITY = 5;
 
     signal input inputHash;
@@ -40,7 +42,7 @@ template AddNewKey(
     signal input d1[2];
     signal input d2[2];
 
-    signal input deactivateLeafPathElements[stateTreeDepth][TREE_ARITY - 1];
+    signal input deactivateLeafPathElements[deactivateTreeDepth][TREE_ARITY - 1];
 
     signal input nullifier;
 
@@ -72,13 +74,13 @@ template AddNewKey(
     deactivateLeafHasher.hash === deactivateLeaf;
 
     // 3.
-    component deactivateLeafPathIndices = QuinGeneratePathIndices(stateTreeDepth);
+    component deactivateLeafPathIndices = QuinGeneratePathIndices(deactivateTreeDepth);
     deactivateLeafPathIndices.in <== deactivateIndex;
 
-    component deactivateQie = QuinLeafExists(stateTreeDepth);
+    component deactivateQie = QuinLeafExists(deactivateTreeDepth);
     deactivateQie.leaf <== deactivateLeaf;
     deactivateQie.root <== deactivateRoot;
-    for (var i = 0; i < stateTreeDepth; i ++) {
+    for (var i = 0; i < deactivateTreeDepth; i ++) {
         deactivateQie.path_index[i] <== deactivateLeafPathIndices.out[i];
         for (var j = 0; j < TREE_ARITY - 1; j++) {
             deactivateQie.path_elements[i][j] <== deactivateLeafPathElements[i][j];
