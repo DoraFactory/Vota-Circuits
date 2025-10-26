@@ -1,5 +1,23 @@
 {
-  "dependencies": {
-    "circomlib": "^2.0.5"
-  }
+	"name": "Vota-Circuits",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build:2115": "rm -rf build/ inputs && ./start_compile_amaci.sh 2-1-1-5"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"blake-hash": "^2.0.0",
+		"circom": "git://github.com/weijiekoh/circomlib.git#24ed08eee0bb613b8c0135d66c1013bd9f78d50a",
+		"circomlib": "^2.0.5",
+		"csv": "^6.0.5",
+		"ethers": "^5.5.2",
+		"ffjavascript": "^0.2.46",
+		"snarkjs": "^0.7.4",
+		"web3": "^1.6.1"
+	}
 }

@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "../node_modules/circomlib/circuits/bitify.circom";
+include "../../../node_modules/circomlib/circuits/bitify.circom";
 
 /*
  * Converts a field element (253 bits) to n 32-bit output elements where n <= 7
