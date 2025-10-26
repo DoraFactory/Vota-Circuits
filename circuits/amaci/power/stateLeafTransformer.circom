@@ -10,6 +10,9 @@ include "../../../node_modules/circomlib/circuits/mux1.circom";
 template StateLeafTransformer() {
     var PACKED_CMD_LENGTH = 3;
 
+    signal input isQuadraticCost;
+
+    // Check active state
     signal input coordPrivKey;
 
     // For the MessageValidator
@@ -51,6 +54,8 @@ template StateLeafTransformer() {
     signal output newSlNonce;
     signal output isValid;
 
+    signal output newBalance;
+
     // Check if the command / message is valid
     component messageValidator = MessageValidator();
     messageValidator.stateTreeIndex <== cmdStateIndex;
@@ -68,11 +73,15 @@ template StateLeafTransformer() {
     messageValidator.sigR8[1] <== cmdSigR8[1];
     messageValidator.sigS <== cmdSigS;
 
+    messageValidator.isQuadraticCost <== isQuadraticCost;
+
     messageValidator.currentVoiceCreditBalance <== slVoiceCreditBalance;
     // messageValidator.slTimestamp <== slTimestamp;
     // messageValidator.pollEndTimestamp <== pollEndTimestamp;
     messageValidator.currentVotesForOption <== currentVotesForOption;
     messageValidator.voteWeight <== cmdNewVoteWeight;
+
+    newBalance <== messageValidator.newBalance;
 
     component decryptIsActive = ElGamalDecrypt();
     decryptIsActive.c1[0] <== slC1[0];
