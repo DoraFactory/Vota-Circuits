@@ -1,7 +1,7 @@
 pragma circom 2.0.0;
 
-include "../../node_modules/circomlib/circuits/poseidon_constants.circom";
-include "../../node_modules/circomlib/circuits/comparators.circom";
+include "../../../../node_modules/circomlib/circuits/poseidon_constants.circom";
+include "../../../../node_modules/circomlib/circuits/comparators.circom";
 
 template PoseidonPerm(t) {
     // Using recommended parameters from whitepaper https://eprint.iacr.org/2019/458.pdf (table 2, table 8)

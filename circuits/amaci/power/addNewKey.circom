@@ -6,7 +6,7 @@ include "./ecdh.circom";
 include "./privToPubKey.circom";
 include "./trees/incrementalQuinTree.circom";
 include "./lib/rerandomize.circom";
-include "../node_modules/circomlib/circuits/mux1.circom";
+include "../../../node_modules/circomlib/circuits/mux1.circom";
 
 /*
  * Proves the correctness of processing a batch of messages.
