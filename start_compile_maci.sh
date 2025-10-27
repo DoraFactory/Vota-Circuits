@@ -9,26 +9,30 @@ fi
 # Use provided parameter as output directory
 OUTPUT_DIR="build/maci/$1"
 
+POWER="power-$1"
+
+echo "POWER: $POWER"
+
 compile_and_ts_and_witness() {
 
   mkdir inputs
-  npm install
+  # npm install
 
   #compile circuits
   mkdir -p $OUTPUT_DIR/r1cs
 
   echo $(date +"%T") "compile the circuit into r1cs, wasm and sym"
   itime="$(date -u +%s)"
-  circom external/vota-circuits/circuits/maci/power/prod/msg.circom --r1cs --wasm --sym -o $OUTPUT_DIR/r1cs
-  circom external/vota-circuits/circuits/maci/power/prod/tally.circom --r1cs --wasm --sym -o $OUTPUT_DIR/r1cs
+  circom zkeys/maci/groth16/1p1v/$POWER/circuits/msg.circom --r1cs --wasm --sym -o $OUTPUT_DIR/r1cs
+  circom zkeys/maci/groth16/1p1v/$POWER/circuits/tally.circom --r1cs --wasm --sym -o $OUTPUT_DIR/r1cs
   ftime="$(date -u +%s)"
   echo "	($(($(date -u +%s)-$itime))s)"
 
   # create zkey
   echo $(date +"%T") "start create zkey"
   mkdir -p $OUTPUT_DIR/zkey
-  snarkjs g16s $OUTPUT_DIR/r1cs/msg.r1cs ptau/powersOfTau28_hez_final_18.ptau $OUTPUT_DIR/zkey/msg_0.zkey
-  snarkjs g16s $OUTPUT_DIR/r1cs/tally.r1cs ptau/powersOfTau28_hez_final_18.ptau $OUTPUT_DIR/zkey/tally_0.zkey
+  snarkjs g16s $OUTPUT_DIR/r1cs/msg.r1cs ptau/powersOfTau28_hez_final_21.ptau $OUTPUT_DIR/zkey/msg_0.zkey
+  snarkjs g16s $OUTPUT_DIR/r1cs/tally.r1cs ptau/powersOfTau28_hez_final_21.ptau $OUTPUT_DIR/zkey/tally_0.zkey
   # output verification key
   echo $(date +"%T") "output verification key"
   mkdir -p $OUTPUT_DIR/verification_key/msg
