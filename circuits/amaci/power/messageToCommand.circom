@@ -3,8 +3,8 @@ pragma circom 2.0.0;
 include "./ecdh.circom";
 include "./unpackElement.circom";
 include "./lib/poseidonDecrypt.circom";
-include "../node_modules/circomlib/circuits/bitify.circom";
-include "../node_modules/circomlib/circuits/poseidon.circom";
+include "../../../node_modules/circomlib/circuits/bitify.circom";
+include "../../../node_modules/circomlib/circuits/poseidon.circom";
 
 template Uint32to96() {
     signal input in[3];

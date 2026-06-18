@@ -4,7 +4,7 @@ pragma circom 2.0.0;
 // https://github.com/peppersec/tornado-mixer/blob/master/circuits/merkleTree.circom
 // https://github.com/appliedzkp/semaphore/blob/master/circuits/circom/semaphore-base.circom
 
-include "../../node_modules/circomlib/circuits/mux1.circom";
+include "../../../../node_modules/circomlib/circuits/mux1.circom";
 include "../hasherPoseidon.circom";
 
 template MerkleTreeInclusionProof(n_levels) {

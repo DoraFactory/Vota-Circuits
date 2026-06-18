@@ -7,7 +7,7 @@ include "./verifySignature.circom";
 include "./privToPubKey.circom";
 include "./trees/incrementalQuinTree.circom";
 include "./lib/rerandomize.circom";
-include "../node_modules/circomlib/circuits/mux1.circom";
+include "../../../node_modules/circomlib/circuits/mux1.circom";
 
 template ProcessDeactivateMessages(
     stateTreeDepth,
